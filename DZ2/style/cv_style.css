@@ -1,0 +1,70 @@
+body{
+width:800px;
+margin:0 auto;
+font-size:14px;
+font-family:Arial, sans-serif;
+padding-left: 30px;
+padding-right: 30px;
+padding-left:30px;
+box-sizing:border-box;
+}
+
+h1{
+font-family:Arial, sans-serif;
+font-size:24px;
+text-align:center;
+}
+.birthdate{
+text-align:center;}
+
+h2{
+text-transform:uppercase;
+font-size:16px;
+}
+
+.contacts{
+line-height:2;
+width:300px;
+height:220px;
+float:left;
+}
+
+#linkdn_logo, #fb_logo {
+margin-right:5px;}
+
+.logo_links{
+text-decoration:none;}
+
+.foto_container{
+width:440px;
+height:220px;
+float:right;
+}
+
+.foto{
+float:right;
+width:150px;
+}
+
+h3{
+font-weight:strong;
+font-size:16px;}
+
+.dates{
+font-size:small;}
+
+#summary{
+margin-top:45px;}
+
+#workrecord, #education, #lang, #activities{
+margin-top:30px;}
+.position{
+margin-top:30px;}
+.table_date{
+width:100px;}
+ul{
+list-style-type: circle;}
+.clear{
+clear:both;}
+
+
