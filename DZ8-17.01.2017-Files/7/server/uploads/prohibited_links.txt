@@ -1,0 +1,5 @@
+prohibitedlink1.net
+prohibitedlink2.net
+prohibitedlink3.net
+prohibitedlink4.net
+prohibitedlink5.net

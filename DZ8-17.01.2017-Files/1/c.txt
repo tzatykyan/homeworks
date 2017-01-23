@@ -1,0 +1,1 @@
+Это строки, которые встречаются только в первом файле: onion cucumber cabbage garlicЭто строки, которые встречаются в обоих файлах: apple grape banana pear ananas cherryЭти строки есть в  обоих файлах более 2х раз:apple banana
