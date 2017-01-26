@@ -20,22 +20,23 @@ $user_db=[
 	'email'=>'email.com']
 ];
 
+$authorize=false;
+
 foreach ($user_db as $user_array){
 		if ($username==$user_array['login'] && $password==$user_array['password']&& $email==$user_array['email'])
 		{
 			setcookie('authorize', "true", time()+60*60*24); //ставим куку, что авторизован
+			$authorize=true;
 		}
 		}
 
 //print_r($_COOKIE);
 
 
-if (array_key_exists('authorize', $_COOKIE)){
+if (($_COOKIE['authorize']=='true')||$authorize=='true'){
 	
-
 ?>
-<!--<form enctype="multipart/form-data" method="post" action="upload.php">
-<p>Upload your file <input type="file" name="userfile"><input type="submit"></p>-->
+
 <ul>
 <li>Desert.jpg <a href="download.php?file=Desert.jpg">скачать</a></li>
 <li>Chrysanthemum.jpg <a href="download.php?file=Chrysanthemum.jpg">скачать</a></li>
@@ -48,6 +49,11 @@ if (array_key_exists('authorize', $_COOKIE)){
 <input type="submit" value="sign out">
 <?php
 }
-echo"<br>";
+
+else{
+	echo "Вернитесь на главную и еще раз введите данные!";?>
+	<a href='/homeworks/DZ9-19.01.2017-Cookies/6/login.php'>Вернуться</a>
+	<?php
+}
 
 ?>
