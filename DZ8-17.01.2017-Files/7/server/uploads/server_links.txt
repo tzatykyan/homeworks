@@ -1,23 +1,22 @@
-﻿serverlink1.net
+﻿serverlink1
+serverlink2
+serverlink3
+﻿userlink1
 
-serverlink2.net
+userlink2
 
-serverlink3.net
+userlink3
 
-serverlink4.net
-﻿userlink1.net
+userlink4
 
-userlink2.net
+userlink5
 
-userlink3.net
+userlink6
 
-userlink4.net
+userlink7
 
-serverlink4.net
+serverlink1
 
-userlink5.net
+userlink8
 
-userlink6.net
-
-userlink7.net
-
+userlink9
