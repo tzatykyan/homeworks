@@ -1,0 +1,34 @@
+{
+  "customer_ids": {
+    "cookie": {% set existing_cookie = customer_ids.cookie %}
+      {% set extra_data = customer.extra_data %}
+      {% if not existing_cookie %}
+        {% if extra_data %}
+          "{{ extra_data }}"
+        {% else %}
+          null
+        {% endif %}
+      {% else %}
+        {% if extra_data %}
+          {% if existing_cookie is string %}
+            {% set cookie_list = [existing_cookie] %}
+          {% else %}
+            {% set cookie_list = existing_cookie %}
+          {% endif %}
+          {% if extra_data not in cookie_list %}
+            {{ (cookie_list + [extra_data]) | json }}
+          {% else %}
+            {{ existing_cookie | json if existing_cookie is string else (existing_cookie | json) }}
+          {% endif %}
+        {% else %}
+          {{ existing_cookie | json if existing_cookie is string else (existing_cookie | json) }}
+        {% endif %}
+      {% endif %},
+    "email_id": "{{ aggregates['688364c8649b9bd6234f8bb9'] }}"
+  },
+  "properties": {
+    "email": "{{ aggregates['688364c8649b9bd6234f8bb9'] }}",
+    "grow_identify_event": {% if customer.extra_data %}true{% else %}false{% endif %},
+    "consent_added": {% if customer.extra_data %}true{% else %}false{% endif %}
+  }
+}

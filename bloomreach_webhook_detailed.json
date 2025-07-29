@@ -1,0 +1,65 @@
+{
+  "_comment": "Bloomreach webhook configuration for cookie assignment based on customer.extra_data",
+  "_logic": {
+    "1": "If no existing cookie and extra_data exists: assign extra_data as cookie",
+    "2": "If existing cookie and extra_data differs: add extra_data to cookie list",
+    "3": "If existing cookie and extra_data same: keep existing, trigger grow_identify",
+    "4": "Always add consent and grow_identify_event when extra_data exists"
+  },
+  
+  "customer_ids": {
+    "cookie": {% set existing_cookie = customer_ids.cookie %}
+      {% set extra_data = customer.extra_data %}
+      
+      {% if not existing_cookie %}
+        {# No existing cookie - assign extra_data if available #}
+        {% if extra_data %}
+          "{{ extra_data }}"
+        {% else %}
+          null
+        {% endif %}
+      {% else %}
+        {# Existing cookie found #}
+        {% if extra_data %}
+          {% if existing_cookie is string %}
+            {% set cookie_list = [existing_cookie] %}
+          {% else %}
+            {% set cookie_list = existing_cookie %}
+          {% endif %}
+          
+          {% if extra_data not in cookie_list %}
+            {# Add extra_data to cookie list if not already present #}
+            {{ (cookie_list + [extra_data]) | json }}
+          {% else %}
+            {# extra_data already in cookie list - keep existing #}
+            {{ existing_cookie | json if existing_cookie is string else (existing_cookie | json) }}
+          {% endif %}
+        {% else %}
+          {# No extra_data - keep existing cookie #}
+          {{ existing_cookie | json if existing_cookie is string else (existing_cookie | json) }}
+        {% endif %}
+      {% endif %},
+    
+    "email_id": "{{ aggregates['688364c8649b9bd6234f8bb9'] }}"
+  },
+  
+  "properties": {
+    "email": "{{ aggregates['688364c8649b9bd6234f8bb9'] }}",
+    
+    {# Always trigger grow_identify when extra_data exists #}
+    "grow_identify_event": {% if customer.extra_data %}true{% else %}false{% endif %},
+    
+    {# Add consent when processing extra_data #}
+    "consent_added": {% if customer.extra_data %}true{% else %}false{% endif %},
+    
+    {# Track the source of cookie assignment #}
+    "cookie_source": {% if customer.extra_data %}"extra_data"{% else %}"existing"{% endif %},
+    
+    {# Debug info - remove in production #}
+    "debug_info": {
+      "existing_cookie_type": "{{ customer_ids.cookie.__class__.__name__ if customer_ids.cookie else 'None' }}",
+      "has_extra_data": {% if customer.extra_data %}true{% else %}false{% endif %},
+      "extra_data_value": "{{ customer.extra_data if customer.extra_data else '' }}"
+    }
+  }
+}
