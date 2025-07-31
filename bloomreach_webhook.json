@@ -1,0 +1,29 @@
+{
+  "customer_ids": {
+    "cookie": {% if customer_ids.cookie %}
+      {% if customer_ids.cookie is string %}
+        {% if customer.extra_data and customer.extra_data != customer_ids.cookie %}
+          [{{ customer_ids.cookie | json }}, {{ customer.extra_data | json }}]
+        {% else %}
+          {{ customer_ids.cookie | json }}
+        {% endif %}
+      {% else %}
+        {% if customer.extra_data and customer.extra_data not in customer_ids.cookie %}
+          {{ (customer_ids.cookie + [customer.extra_data]) | json }}
+        {% else %}
+          {{ customer_ids.cookie | json }}
+        {% endif %}
+      {% endif %}
+    {% else %}
+      {% if customer.extra_data %}
+        {{ customer.extra_data | json }}
+      {% else %}
+        null
+      {% endif %}
+    {% endif %},
+    "email_id": "{{ aggregates['688364c8649b9bd6234f8bb9'] }}"
+  },
+  "properties": {
+    "email": "{{ aggregates['688364c8649b9bd6234f8bb9'] }}"
+  }
+}

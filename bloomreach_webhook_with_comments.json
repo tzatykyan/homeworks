@@ -1,0 +1,40 @@
+{
+  "customer_ids": {
+    // Logic for handling customer.extra_data assignment to cookie field
+    "cookie": {% if customer_ids.cookie %}
+      // Case 1: customer_ids.cookie already exists
+      {% if customer_ids.cookie is string %}
+        // Case 1a: cookie is a single string value
+        {% if customer.extra_data and customer.extra_data != customer_ids.cookie %}
+          // If extra_data exists and is different from current cookie, convert to array
+          [{{ customer_ids.cookie | json }}, {{ customer.extra_data | json }}]
+        {% else %}
+          // If extra_data doesn't exist or is same as cookie, keep original
+          {{ customer_ids.cookie | json }}
+        {% endif %}
+      {% else %}
+        // Case 1b: cookie is already an array/list
+        {% if customer.extra_data and customer.extra_data not in customer_ids.cookie %}
+          // If extra_data exists and is not in the array, append it
+          {{ (customer_ids.cookie + [customer.extra_data]) | json }}
+        {% else %}
+          // If extra_data doesn't exist or is already in array, keep original
+          {{ customer_ids.cookie | json }}
+        {% endif %}
+      {% endif %}
+    {% else %}
+      // Case 2: customer_ids.cookie doesn't exist
+      {% if customer.extra_data %}
+        // If extra_data exists, use it as the cookie value
+        {{ customer.extra_data | json }}
+      {% else %}
+        // If extra_data doesn't exist, set to null
+        null
+      {% endif %}
+    {% endif %},
+    "email_id": "{{ aggregates['688364c8649b9bd6234f8bb9'] }}"
+  },
+  "properties": {
+    "email": "{{ aggregates['688364c8649b9bd6234f8bb9'] }}"
+  }
+}
