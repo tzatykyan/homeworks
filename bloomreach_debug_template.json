@@ -1,0 +1,42 @@
+{% comment %}Debug version - logs variable values{% endcomment %}
+{% assign debug_customer_ids_cookie = customer_ids.cookie %}
+{% assign debug_customer_extra_data = customer.extra_data %}
+{% assign debug_email_id = customer_ids.email_id %}
+
+{% comment %}Log values for debugging{% endcomment %}
+<!-- DEBUG: customer_ids.cookie = {{ debug_customer_ids_cookie | json }} -->
+<!-- DEBUG: customer.extra_data = {{ debug_customer_extra_data | json }} -->
+<!-- DEBUG: customer_ids.email_id = {{ debug_email_id | json }} -->
+
+{% if customer_ids.cookie is string %}
+  {% if customer_ids.cookie != customer.extra_data %}
+    {% set new_cookie = [customer_ids.cookie] %}
+    {% if customer.extra_data %}
+      {% append customer.extra_data to new_cookie %}
+    {% endif %}
+    {% set final_cookie = new_cookie %}
+  {% else %}
+    {% set final_cookie = [customer_ids.cookie] %}
+  {% endif %}
+{% elif customer_ids.cookie is iterable %}
+  {% set new_cookie = customer_ids.cookie %}
+  {% if customer.extra_data and customer.extra_data not in new_cookie %}
+    {% append customer.extra_data to new_cookie %}
+  {% endif %}
+  {% set final_cookie = new_cookie %}
+{% else %}
+  {% if customer.extra_data %}
+    {% set final_cookie = [customer.extra_data] %}
+  {% else %}
+    {% set final_cookie = [] %}
+  {% endif %}
+{% endif %}
+
+<!-- DEBUG: final_cookie = {{ final_cookie | json }} -->
+
+{
+  "customer_ids": {
+    "email_id": {{ customer_ids.email_id | default: '""' | json }},
+    "cookie": {{ final_cookie | json }}
+  }
+}
